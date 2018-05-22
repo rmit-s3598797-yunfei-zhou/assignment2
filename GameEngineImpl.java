@@ -38,44 +38,32 @@ public class GameEngineImpl implements GameEngine {
 	int result4 = 0;
 	int result5 = 0;
 	ResultSet result1 = null;
+	Collection<String[]> peopleDataList = new ArrayList<String[]>();// for saving people data of each line in txt, to
+																	// set a loop
+	// input into database
 
 	@Override
-	public void initialPeopleList() throws Exception{
+	public void initialPeopleList() throws Exception {
 		try {
-			String path = "../ApAssignment2/src/inPutData/inputPeople.txt";
+			String path = "../../ApAssignment2/src/inPutData/inputPeople.txt";
 			File file = new File(path); // read the above file path
 			InputStreamReader reader = new InputStreamReader(new FileInputStream(file)); // create a stream reader
 			BufferedReader br = new BufferedReader(reader); // create a buffered reader
 			String line = "";
-			// jdbc part:
-			Class.forName("org.hsqldb.jdbc.JDBCDriver");
-			con = DriverManager.getConnection("jdbc:hsqldb:TestDB", "sa", "123");
-			stmt = con.createStatement();
-			result4 = stmt.executeUpdate("DROP TABLE people if exists");
-			System.out.println(result4 + " tables dropped");
-			result3 = stmt.executeUpdate(
-					"CREATE TABLE people (name varchar(20), picture varchar(20), status varchar(20), gender varchar(20), age varchar(20), state varchar(20));");
-			System.out.println(result3 + " tables created from database");
-
 			while ((line = br.readLine()) != null) {
 				String[] p = line.split(",");
 				// read txt and put data into arrayList
 				peopleList.add(new PeopleImpl(p[0], p[1], p[2], p[3], p[4], p[5]));
-				// also insert the txt data into database
-				result2 = stmt.executeUpdate("INSERT INTO people VALUES ('" + p[0] + "','" + p[1] + "','" + p[2] + "','"
-						+ p[3] + "','" + p[4] + "','" + p[5] + "')");
-				System.out.println(result2 + " people inserted into database");
+				peopleDataList.add(p);
 			}
-			System.out.println("txt document exists");
+			System.out.println("inputPeople.txt document exists");
 			System.out.println("loading data from txt documents successfully!");
 			br.close();
 		} catch (FileNotFoundException e) {
 			try {
-				try {
-					Class.forName("org.hsqldb.jdbc.JDBCDriver");
-				} catch (ClassNotFoundException e1) {
-					e1.printStackTrace();
-				}
+
+				Class.forName("org.hsqldb.jdbc.JDBCDriver");
+
 				con = DriverManager.getConnection("jdbc:hsqldb:TestDB", "sa", "123");
 				stmt = con.createStatement();
 				result1 = stmt.executeQuery("SELECT name,picture,status,gender,age,state FROM people");
@@ -84,21 +72,45 @@ public class GameEngineImpl implements GameEngine {
 							result1.getString("status"), result1.getString("gender"), result1.getString("age"),
 							result1.getString("state")));
 				}
+				stmt.close();
+				con.close();
+				System.out.println("inputPeople.txt document not found");
+				System.out.println("loading data from database successfully!");
 			} catch (SQLException e1) {
-				throw new Exception();
+				System.out.println("loading data from database failed");
 			}
-			System.out.println("txt document not found");
-			System.out.println("loading data from database successfully!");
 		} catch (Exception e) {
-			System.out.println("txt document and database are both not found");
+			System.out.println("inputPeople.txt document and database are both not found");
 			throw new Exception();
+		}
+		try {
+			// update txt data to databse
+			Class.forName("org.hsqldb.jdbc.JDBCDriver");
+			con = DriverManager.getConnection("jdbc:hsqldb:TestDB", "sa", "123");
+			stmt = con.createStatement();
+			result4 = stmt.executeUpdate("DROP TABLE people if exists");
+			System.out.println(result4 + " tables dropped");
+			result3 = stmt.executeUpdate(
+					"CREATE TABLE people (name varchar(20), picture varchar(20), status varchar(20), gender varchar(20), age varchar(20), state varchar(20));");
+			System.out.println(result3 + " tables created from database");
+			for (String[] p : peopleDataList) {
+				// also insert the txt data into database
+				result2 = stmt.executeUpdate("INSERT INTO people VALUES ('" + p[0] + "','" + p[1] + "','" + p[2] + "','"
+						+ p[3] + "','" + p[4] + "','" + p[5] + "')");
+				System.out.println(result2 + " people inserted into database");
+			}
+			stmt.close();
+			con.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("can not update data to database");
 		}
 	}
 
 	@Override
 	public void initialRelationList() {
 		try {
-			String path1 = "../ApAssignment2/src/inPutData/inputRelation.txt";
+			String path1 = "../../ApAssignment2/src/inPutData/inputRelation.txt";
 			File file1 = new File(path1);
 			InputStreamReader reader1 = new InputStreamReader(new FileInputStream(file1));
 			BufferedReader br1 = new BufferedReader(reader1);
@@ -109,7 +121,7 @@ public class GameEngineImpl implements GameEngine {
 			}
 			br1.close();
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("inputRelation.txt is missing");
 		}
 	}
 
@@ -215,7 +227,7 @@ public class GameEngineImpl implements GameEngine {
 		if ((age1 <= 16 || age2 <= 16) && relationship.contains("colleague")) {
 			throw new NotToBeColleaguesException();
 		}
-		if ((age1 < 3 || age2 < 3) && relationship.contains("colleague")) {
+		if ((age1 < 3 || age2 < 3) && relationship.contains("classmate")) {
 			throw new NotToBeClassmatesException();
 		}
 		relationList.add(new RelationImpl(people1, people2, relationship));
@@ -237,16 +249,21 @@ public class GameEngineImpl implements GameEngine {
 		Collection<String> parentList = new ArrayList<String>();
 		String parents = null;
 		for (Relation relation : relationList) {
-			if ((relation.getName1()).contains(name)&& (relation.getRelation().contains("parent"))) {
-				parentList.add(relation.getName2());
+			if ((relation.getName1()).contains(name) && (relation.getRelation().contains("parent"))) {
+				if (Integer.parseInt(getSelectedPeople(relation.getName2()).getAge()) > 16) {
+					parentList.add(relation.getName2());
+				}
 			}
-			if ((relation.getName2()).contains(name)&& (relation.getRelation().contains("parent"))) {
-				parentList.add(relation.getName1());
+			if ((relation.getName2()).contains(name) && (relation.getRelation().contains("parent"))) {
+				if (Integer.parseInt(getSelectedPeople(relation.getName1()).getAge()) > 16) {
+					parentList.add(relation.getName1());
+				}
 			}
 		}
-		if (parentList != null) {
+		if (parentList.size()>0) {
+			parents = "||";
 			for (String parent : parentList) {
-				parents = parents + "||" + parent;
+				parents = parents + parent + "||";
 			}
 		}
 		return parents;
@@ -257,20 +274,21 @@ public class GameEngineImpl implements GameEngine {
 		Collection<String> childrenList = new ArrayList<String>();
 		String children = null;
 		for (Relation relation : relationList) {
-			if (((relation.getName1()).contains(name)
-					&& Integer.parseInt(getSelectedPeople(relation.getName2()).getAge()) <= 16)
-					&& (relation.getRelation().contains("parent"))) {
-				childrenList.add(relation.getName2());
+			if (((relation.getName1()).contains(name)) && (relation.getRelation().contains("parent"))) {
+				if (Integer.parseInt(getSelectedPeople(relation.getName2()).getAge()) <= 16) {
+					childrenList.add(relation.getName2());
+				}
 			}
-			if (((relation.getName2()).contains(name)
-					&& Integer.parseInt(getSelectedPeople(relation.getName1()).getAge()) <= 16)
-					&& (relation.getRelation().contains("parent"))) {
-				childrenList.add(relation.getName1());
+			if (((relation.getName2()).contains(name)) && (relation.getRelation().contains("parent"))) {
+				if (Integer.parseInt(getSelectedPeople(relation.getName1()).getAge()) <= 16) {
+					childrenList.add(relation.getName1());
+				}
 			}
 		}
-		if (childrenList != null) {
+		if (childrenList.size()>0) {
+			children = "||";
 			for (String child : childrenList) {
-				children = children + "||" + child;
+				children = children + child + "||";
 			}
 		}
 		return children;

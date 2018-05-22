@@ -8,7 +8,7 @@ public class NotToBeClassmatesException extends Exception{
 	private static final long serialVersionUID = 1L;
 
 	public String toString() {
-		return "";		
+		return "can not connect a child in a classmate relation";		
 	}
 
 }

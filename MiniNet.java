@@ -15,6 +15,8 @@ import exceptions.TooYoungException;
 import functionality.GameEngineImpl;
 import interfaces.GameEngine;
 import interfaces.People;
+import javafx.animation.PathTransition;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.scene.Group;
@@ -27,11 +29,14 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public class MiniNet extends Application {
 	final GameEngine gameEngine = new GameEngineImpl();
@@ -40,27 +45,27 @@ public class MiniNet extends Application {
 	public void start(Stage primaryStage) {
 		int p = 0;
 		Pane pane = new Pane();
-		Scene scene = new Scene(pane, 900, 350);
+		Scene scene = new Scene(pane, 900, 550);
 		primaryStage.setTitle("MiniNet");
 		primaryStage.setScene(scene);
 		primaryStage.show();
 
-		Text welcomeText = new Text(210, 90, "Welcome To MiniNet !");
+		Text welcomeText = new Text(210, 190, "Welcome To MiniNet !");
 		welcomeText.setFont(Font.font("Courier", FontWeight.BOLD, FontPosture.ITALIC, 40));
 		welcomeText.setFill(Color.CORNFLOWERBLUE);
 		pane.getChildren().add(welcomeText);
-		Text authorText = new Text(290, 140, "(developer: JiaQi Tang  s3598284)");
+		Text authorText = new Text(290, 240, "(developer: JiaQi Tang  s3598284)");
 		authorText.setFont(Font.font("Courier", FontWeight.BOLD, FontPosture.ITALIC, 15));
 		authorText.setFill(Color.LIGHTBLUE);
 		pane.getChildren().add(authorText);
-		Text authorText2 = new Text(290, 170, "(developer: YunFei Zhou s3598797)");
+		Text authorText2 = new Text(290, 270, "(developer: YunFei Zhou s3598797)");
 		authorText2.setFont(Font.font("Courier", FontWeight.BOLD, FontPosture.ITALIC, 15));
 		authorText2.setFill(Color.LIGHTBLUE);
 		pane.getChildren().add(authorText2);
 		// all what happen when button 'start' is clicked are defined here
 		Button start = new Button("START");
 		start.setLayoutX(360);
-		start.setLayoutY(200);
+		start.setLayoutY(300);
 		start.setFont(Font.font("Courier", FontWeight.BOLD, FontPosture.REGULAR, 25));
 		start.setTextFill(Color.DODGERBLUE);
 		start.setPrefHeight(80);
@@ -71,6 +76,7 @@ public class MiniNet extends Application {
 			try {
 				gameEngine.initialPeopleList();
 			} catch (Exception e3) {
+				e3.printStackTrace();
 				System.out.println("txt document and database are both not found");
 				GridPane pane7 = new GridPane();
 				Scene settingsScene = new Scene(pane7, 500, 30);
@@ -87,14 +93,136 @@ public class MiniNet extends Application {
 			welcomeText.setVisible(false);
 			authorText.setVisible(false);
 			authorText2.setVisible(false);
-			Text guidingTxt = new Text(60, 50, "Just Do Anything You want  ==>>");
+			Text guidingTxt = new Text(40, 120, "Just Do Anything You want      ==>>");
 			guidingTxt.setFont(Font.font("Courier", FontWeight.BOLD, FontPosture.ITALIC, 30));
 			guidingTxt.setFill(Color.CORNFLOWERBLUE);
 			pane.getChildren().add(guidingTxt);
+			/*
+			 * make a flower animation ,just for fun!!
+			*/
+			Rectangle rectangle1 = new Rectangle(0, 0, 10, 20);
+			Rectangle rectangle2 = new Rectangle(0, 0, 10, 20);
+			Rectangle rectangle3 = new Rectangle(0, 0, 10, 20);
+			Rectangle rectangle4 = new Rectangle(0, 0, 10, 20);
+			Rectangle rectangle5 = new Rectangle(0, 0, 10, 20);
+			Rectangle rectangle6 = new Rectangle(0, 0, 10, 20);
+			Rectangle rectangle7 = new Rectangle(0, 0, 10, 20);
+			Rectangle rectangle8 = new Rectangle(0, 0, 10, 20);
+			Rectangle rectangle9 = new Rectangle(0, 0, 10, 20);
+			Rectangle rectangle0 = new Rectangle(0, 0, 10, 20);
+			rectangle1.setFill(Color.CORNFLOWERBLUE);
+			rectangle2.setFill(Color.CORNFLOWERBLUE);
+			rectangle3.setFill(Color.CORNFLOWERBLUE);
+			rectangle4.setFill(Color.CORNFLOWERBLUE);
+			rectangle5.setFill(Color.CORNFLOWERBLUE);
+			rectangle6.setFill(Color.CORNFLOWERBLUE);
+			rectangle7.setFill(Color.CORNFLOWERBLUE);
+			rectangle8.setFill(Color.CORNFLOWERBLUE);
+			rectangle9.setFill(Color.CORNFLOWERBLUE);
+			rectangle0.setFill(Color.CORNFLOWERBLUE);
+
+			Circle circle = new Circle(550, 110, 20);
+			circle.setFill(Color.WHITE);
+			circle.setStroke(Color.BLACK);
+
+			pane.getChildren().add(circle);
+			pane.getChildren().add(rectangle1);
+			pane.getChildren().add(rectangle2);
+			pane.getChildren().add(rectangle3);
+			pane.getChildren().add(rectangle4);
+			pane.getChildren().add(rectangle5);
+			pane.getChildren().add(rectangle6);
+			pane.getChildren().add(rectangle7);
+			pane.getChildren().add(rectangle8);
+			pane.getChildren().add(rectangle9);
+			pane.getChildren().add(rectangle0);
+
+			PathTransition pt1 = new PathTransition();
+			pt1.setDuration(Duration.millis(1000));
+			pt1.setPath(circle);
+			pt1.setNode(rectangle1);
+			pt1.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
+			pt1.setCycleCount(Timeline.INDEFINITE);
+			pt1.setAutoReverse(true);
+			pt1.play(); 
+			PathTransition pt2 = new PathTransition();
+			pt2.setDuration(Duration.millis(2000));
+			pt2.setPath(circle);
+			pt2.setNode(rectangle2);
+			pt2.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
+			pt2.setCycleCount(Timeline.INDEFINITE);
+			pt2.setAutoReverse(true);
+			pt2.play(); 
+			PathTransition pt3 = new PathTransition();
+			pt3.setDuration(Duration.millis(3000));
+			pt3.setPath(circle);
+			pt3.setNode(rectangle3);
+			pt3.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
+			pt3.setCycleCount(Timeline.INDEFINITE);
+			pt3.setAutoReverse(true);
+			pt3.play(); 
+			PathTransition pt4 = new PathTransition();
+			pt4.setDuration(Duration.millis(4000));
+			pt4.setPath(circle);
+			pt4.setNode(rectangle4);
+			pt4.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
+			pt4.setCycleCount(Timeline.INDEFINITE);
+			pt4.setAutoReverse(true);
+			pt4.play(); 
+			PathTransition pt5 = new PathTransition();
+			pt5.setDuration(Duration.millis(5000));
+			pt5.setPath(circle);
+			pt5.setNode(rectangle5);
+			pt5.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
+			pt5.setCycleCount(Timeline.INDEFINITE);
+			pt5.setAutoReverse(true);
+			pt5.play(); 
+			PathTransition pt6 = new PathTransition();
+			pt6.setDuration(Duration.millis(6000));
+			pt6.setPath(circle);
+			pt6.setNode(rectangle6);
+			pt6.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
+			pt6.setCycleCount(Timeline.INDEFINITE);
+			pt6.setAutoReverse(true);
+			pt6.play(); 
+			PathTransition pt7 = new PathTransition();
+			pt7.setDuration(Duration.millis(7000));
+			pt7.setPath(circle);
+			pt7.setNode(rectangle7);
+			pt7.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
+			pt7.setCycleCount(Timeline.INDEFINITE);
+			pt7.setAutoReverse(true);
+			pt7.play(); 
+			PathTransition pt8 = new PathTransition();
+			pt8.setDuration(Duration.millis(8000));
+			pt8.setPath(circle);
+			pt8.setNode(rectangle8);
+			pt8.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
+			pt8.setCycleCount(Timeline.INDEFINITE);
+			pt8.setAutoReverse(true);
+			pt8.play(); 
+			PathTransition pt9 = new PathTransition();
+			pt9.setDuration(Duration.millis(9000));
+			pt9.setPath(circle);
+			pt9.setNode(rectangle9);
+			pt9.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
+			pt9.setCycleCount(Timeline.INDEFINITE);
+			pt9.setAutoReverse(true);
+			pt9.play(); 
+			PathTransition pt0 = new PathTransition();
+			pt0.setDuration(Duration.millis(10000));
+			pt0.setPath(circle);
+			pt0.setNode(rectangle0);
+			pt0.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
+			pt0.setCycleCount(Timeline.INDEFINITE);
+			pt0.setAutoReverse(true);
+			pt0.play(); 
+			
+			
 			// all what happen when button 'list people' is clicked are defined here
 			Button listPeople = new Button("List people");
 			listPeople.setLayoutX(720);
-			listPeople.setLayoutY(30);
+			listPeople.setLayoutY(100);
 			listPeople.setTextFill(Color.CHOCOLATE);
 			pane.getChildren().add(listPeople);
 			listPeople.setOnAction((ActionEvent a) -> {
@@ -113,18 +241,18 @@ public class MiniNet extends Application {
 						// remove the " “ " and " ” " of the picture name that we load from the txt
 						// document
 						String picName = (people.getPic()).replace("“", "").replace("”", "");
-						image = new Image(new FileInputStream("../ApAssignment2/src/inPutData/" + picName));
+						image = new Image(new FileInputStream("../../ApAssignment2/src/inPutData/" + picName));
 					} catch (FileNotFoundException e1) {
 						// Creating an image
 						Image image2 = null;
 						try {
-							image2 = new Image(new FileInputStream("../ApAssignment2/src/inPutData/NoPic.jpg"));
+							image2 = new Image(new FileInputStream("../../ApAssignment2/src/inPutData/NoPic.jpg"));
 						} catch (FileNotFoundException e2) {
 							GridPane pane7 = new GridPane();
 							Scene settingsScene = new Scene(pane7, 500, 30);
 							Stage popup = new Stage();
 							popup.setScene(settingsScene);
-							Text reminder = new Text(50, 200, "unknown error");
+							Text reminder = new Text(50, 200, "pictures are missing");
 							reminder.setFont(Font.font("Courier", FontWeight.THIN, FontPosture.ITALIC, 20));
 							reminder.setFill(Color.RED);
 							pane7.getChildren().add(reminder);
@@ -193,7 +321,7 @@ public class MiniNet extends Application {
 			// all what happen when button 'select people' is clicked are defined here
 			Button selectPeople = new Button("Select people");
 			selectPeople.setLayoutX(720);
-			selectPeople.setLayoutY(70);
+			selectPeople.setLayoutY(150);
 			selectPeople.setTextFill(Color.CHOCOLATE);
 			pane.getChildren().add(selectPeople);
 			selectPeople.setOnAction((ActionEvent a) -> {
@@ -249,12 +377,13 @@ public class MiniNet extends Application {
 								// document
 								String picName = (gameEngine.getSelectedPeople(selectNameField.getText()).getPic())
 										.replace("“", "").replace("”", "");
-								image = new Image(new FileInputStream("../ApAssignment2/src/inPutData/" + picName));
+								image = new Image(new FileInputStream("../../ApAssignment2/src/inPutData/" + picName));
 							} catch (FileNotFoundException e1) {
 								// Creating an image
 								Image image2 = null;
 								try {
-									image2 = new Image(new FileInputStream("../ApAssignment2/src/inPutData/NoPic.jpg"));
+									image2 = new Image(
+											new FileInputStream("../../ApAssignment2/src/inPutData/NoPic.jpg"));
 								} catch (FileNotFoundException e2) {
 									GridPane pane7 = new GridPane();
 									Scene settingsScene = new Scene(pane7, 500, 30);
@@ -331,8 +460,8 @@ public class MiniNet extends Application {
 								reminder.setFill(Color.RED);
 								pane7.getChildren().add(reminder);
 								popup.show();
-							}catch(Exception e1) {
-								
+							} catch (Exception e1) {
+
 							}
 						});
 						backToMain.setOnAction((ActionEvent d) -> {
@@ -359,7 +488,7 @@ public class MiniNet extends Application {
 			// all what happen when button 'add people' is clicked are defined here
 			Button addANewPeople = new Button("Add people ");
 			addANewPeople.setLayoutX(720);
-			addANewPeople.setLayoutY(110);
+			addANewPeople.setLayoutY(200);
 			addANewPeople.setTextFill(Color.CHOCOLATE);
 			pane.getChildren().add(addANewPeople);
 			addANewPeople.setOnAction((ActionEvent a) -> {
@@ -503,7 +632,7 @@ public class MiniNet extends Application {
 			// all what happen when button 'find relation' is clicked are defined here
 			Button findRelation = new Button("Find relationship");
 			findRelation.setLayoutX(720);
-			findRelation.setLayoutY(150);
+			findRelation.setLayoutY(250);
 			findRelation.setTextFill(Color.CHOCOLATE);
 			pane.getChildren().add(findRelation);
 			findRelation.setOnAction((ActionEvent a) -> {
@@ -524,10 +653,17 @@ public class MiniNet extends Application {
 				primaryStage.show();
 
 				btFindRelation.setOnAction((ActionEvent f) -> {
-					Text relation = new Text(50, 200, "their relation type is :"
+
+					GridPane pane7 = new GridPane();
+					Scene settingsScene = new Scene(pane7, 500, 30);
+					Stage popup = new Stage();
+					popup.setScene(settingsScene);
+					Text reminder = new Text(50, 200, "their relation type is :"
 							+ gameEngine.findRelationship(firstNameField.getText(), secondNameField.getText()) + " ");
-					relation.setFont(Font.font("Courier", FontWeight.THIN, FontPosture.ITALIC, 20));
-					pane5.getChildren().add(relation);
+					reminder.setFont(Font.font("Courier", FontWeight.THIN, FontPosture.ITALIC, 20));
+					reminder.setFill(Color.CHOCOLATE);
+					pane7.getChildren().add(reminder);
+					popup.show();
 				});
 				btBack.setOnAction((ActionEvent f) -> {
 					primaryStage.setTitle("MiniNet");
@@ -538,7 +674,7 @@ public class MiniNet extends Application {
 			// all what happen when button 'add relation' is clicked are defined here
 			Button defineRelation = new Button("Add relationship");
 			defineRelation.setLayoutX(720);
-			defineRelation.setLayoutY(190);
+			defineRelation.setLayoutY(300);
 			defineRelation.setTextFill(Color.CHOCOLATE);
 			pane.getChildren().add(defineRelation);
 			defineRelation.setOnAction((ActionEvent a) -> {
@@ -584,7 +720,7 @@ public class MiniNet extends Application {
 					} catch (NotToBeFriendsException e1) {
 						System.out.println(e1.toString());
 						GridPane pane7 = new GridPane();
-						Scene settingsScene = new Scene(pane7, 500, 30);
+						Scene settingsScene = new Scene(pane7, 1200, 30);
 						Stage popup = new Stage();
 						popup.setScene(settingsScene);
 						Text reminder = new Text(50, 200, e1.toString());
@@ -596,7 +732,7 @@ public class MiniNet extends Application {
 					} catch (NoAvailableException e1) {
 						System.out.println(e1.toString());
 						GridPane pane7 = new GridPane();
-						Scene settingsScene = new Scene(pane7, 500, 30);
+						Scene settingsScene = new Scene(pane7, 1000, 30);
 						Stage popup = new Stage();
 						popup.setScene(settingsScene);
 						Text reminder = new Text(50, 200, e1.toString());
@@ -608,7 +744,7 @@ public class MiniNet extends Application {
 					} catch (NotToBeCoupledException e1) {
 						System.out.println(e1.toString());
 						GridPane pane7 = new GridPane();
-						Scene settingsScene = new Scene(pane7, 500, 30);
+						Scene settingsScene = new Scene(pane7, 1000, 30);
 						Stage popup = new Stage();
 						popup.setScene(settingsScene);
 						Text reminder = new Text(50, 200, e1.toString());
@@ -620,7 +756,7 @@ public class MiniNet extends Application {
 					} catch (NotToBeColleaguesException e1) {
 						System.out.println(e1.toString());
 						GridPane pane7 = new GridPane();
-						Scene settingsScene = new Scene(pane7, 500, 30);
+						Scene settingsScene = new Scene(pane7, 600, 30);
 						Stage popup = new Stage();
 						popup.setScene(settingsScene);
 						Text reminder = new Text(50, 200, e1.toString());
@@ -632,7 +768,7 @@ public class MiniNet extends Application {
 					} catch (NotToBeClassmatesException e1) {
 						System.out.println(e1.toString());
 						GridPane pane7 = new GridPane();
-						Scene settingsScene = new Scene(pane7, 500, 30);
+						Scene settingsScene = new Scene(pane7, 600, 30);
 						Stage popup = new Stage();
 						popup.setScene(settingsScene);
 						Text reminder = new Text(50, 200, e1.toString());
@@ -662,7 +798,7 @@ public class MiniNet extends Application {
 			// all what happen when button 'find children' is clicked are defined here
 			Button findChildren = new Button("Find children");
 			findChildren.setLayoutX(720);
-			findChildren.setLayoutY(230);
+			findChildren.setLayoutY(350);
 			findChildren.setTextFill(Color.CHOCOLATE);
 			pane.getChildren().add(findChildren);
 			findChildren.setOnAction((ActionEvent a) -> {
@@ -681,10 +817,16 @@ public class MiniNet extends Application {
 
 				btFindChildren.setOnAction((ActionEvent g) -> {
 
-					Text children = new Text(50, 200,
-							"this person's children are:" + gameEngine.findParents(firstNameField.getText()));
-					children.setFont(Font.font("Courier", FontWeight.THIN, FontPosture.ITALIC, 20));
-					pane7.getChildren().add(children);
+					GridPane pane8 = new GridPane();
+					Scene settingsScene = new Scene(pane8, 700, 30);
+					Stage popup = new Stage();
+					popup.setScene(settingsScene);
+					Text reminder = new Text(50, 200,
+							"this person's children are:" + gameEngine.findChild(firstNameField.getText()));
+					reminder.setFont(Font.font("Courier", FontWeight.THIN, FontPosture.ITALIC, 20));
+					reminder.setFill(Color.CHOCOLATE);
+					pane8.getChildren().add(reminder);
+					popup.show();
 				});
 				btBack.setOnAction((ActionEvent g) -> {
 					primaryStage.setTitle("MiniNet");
@@ -695,7 +837,7 @@ public class MiniNet extends Application {
 			// all what happen when button 'find parents' is clicked are defined here
 			Button findParents = new Button("Find parents ");
 			findParents.setLayoutX(720);
-			findParents.setLayoutY(270);
+			findParents.setLayoutY(400);
 			findParents.setTextFill(Color.CHOCOLATE);
 			pane.getChildren().add(findParents);
 			findParents.setOnAction((ActionEvent a) -> {
@@ -714,10 +856,16 @@ public class MiniNet extends Application {
 
 				btFindParents.setOnAction((ActionEvent h) -> {
 
-					Text parents = new Text(50, 200,
+					GridPane pane9 = new GridPane();
+					Scene settingsScene = new Scene(pane9, 700, 30);
+					Stage popup = new Stage();
+					popup.setScene(settingsScene);
+					Text reminder = new Text(50, 200,
 							"this person's parents are:" + gameEngine.findParents(firstNameField.getText()));
-					parents.setFont(Font.font("Courier", FontWeight.THIN, FontPosture.ITALIC, 20));
-					pane8.getChildren().add(parents);
+					reminder.setFont(Font.font("Courier", FontWeight.THIN, FontPosture.ITALIC, 20));
+					reminder.setFill(Color.CHOCOLATE);
+					pane9.getChildren().add(reminder);
+					popup.show();
 				});
 				btBack.setOnAction((ActionEvent h) -> {
 					primaryStage.setTitle("MiniNet");
