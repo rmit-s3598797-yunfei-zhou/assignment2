@@ -1,13 +1,6 @@
-/*C3*/SET SCHEMA PUBLIC
+/*C4*/SET SCHEMA PUBLIC
+DISCONNECT
+/*C5*/SET SCHEMA PUBLIC
 DROP TABLE people if exists
 CREATE TABLE people (name varchar(20), picture varchar(20), status varchar(20), gender varchar(20), age varchar(20), state varchar(20))
-INSERT INTO PEOPLE VALUES('Alex Smith','\u201c\u201d','\u201cstudent at RMIT\u201d','M','21','WA')
-COMMIT
-INSERT INTO PEOPLE VALUES('Ben Turner','\u201cBenPhoto.jpg\u201d','\u201cmanager at Coles\u201d','M','35','VIC')
-COMMIT
-INSERT INTO PEOPLE VALUES('Hannah White','\u201cHannah.png\u201d','\u201cstudent at PLC\u201d','F','14','VIC')
-COMMIT
-INSERT INTO PEOPLE VALUES('Zoe Foster','\u201c\u201d','\u201cFounder of ZFX\u201d','F','28','VIC')
-COMMIT
-INSERT INTO PEOPLE VALUES('Mark Turner','\u201cMark.jpeg\u201d','\u201c\u201d','M','2','VIC')
-COMMIT
+DISCONNECT
